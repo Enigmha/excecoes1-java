@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import model.excecao.DommainException;
+
 public class Reserva {
 	
 	private Integer numQuarto;
@@ -14,6 +16,9 @@ public class Reserva {
 	
 	
 	public Reserva(Integer numQuarto, Date checkIn, Date checkOut) {
+		if(!checkOut.after(checkIn))  {
+			throw new DommainException("Erro na reserva: Check-Out data maior que a data Check-In ");
+		}
 		this.numQuarto = numQuarto;
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
@@ -45,17 +50,17 @@ public class Reserva {
 		return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 	}
 	
-	public String updateDates(Date checkIn, Date checkOut) {
+	public void updateDates(Date checkIn, Date checkOut) {
 		Date now = new Date();
 		if (checkIn.before(now) || checkOut.before(now)) {
-			return "As data te que ser futuras a data checkin";
+			throw new DommainException( "As data te que ser futuras a data checkin");
 		}
 		if(!checkOut.after(checkIn))  {
-			return "Erro na reserva: Check-Out data maior que a data Check-In ";
+			throw new DommainException("Erro na reserva: Check-Out data maior que a data Check-In ");
 		}
 		this.checkIn = checkIn;
 		this.checkOut =checkOut;
-		return null;
+
 	}
 	
 	@Override
