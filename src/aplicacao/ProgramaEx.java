@@ -14,6 +14,7 @@ public class ProgramaEx {
 		Scanner sc = new Scanner(System.in);
 		SimpleDateFormat sdf =new SimpleDateFormat("dd/MM/yyyy");
 		
+		
 		System.out.print("Numero do Quarto: ");
 		Integer numQuarto = sc.nextInt();
 		System.out.print("Check-IN data (DD/MM/AAAA): ");
@@ -38,22 +39,17 @@ public class ProgramaEx {
 		System.out.print("Check-Out data (DD/MM/AAAA): ");
 		checkOut = sdf.parse(sc.next());
 		
-		Reserva reserva = new Reserva(numQuarto, checkIn, checkOut);
-		
-		Date now = new Date();
-		if (checkIn.before(now) || checkOut.before(now)) {
-			System.out.println("As data te que ser futuras a data checkin");
-		}
-		else if(!checkOut.after(checkIn))  {
-			System.out.println("Erro na reserva: Check-Out data maior que a data Check-In ");
+		Reserva reserva = new Reserva(numQuarto, checkIn, checkOut);		
+		String error = reserva.updateDates(checkIn, checkOut);
+		if(error!= null) {
+			System.out.println("erro na resera: "+ error);
 		}
 		else {
-			reserva.updateDates(checkIn, checkOut);
 			System.out.println("Reserva: "+ reserva );
 		}
 		
 		
-		sc.close();
+	sc.close();
 
 	}
 
